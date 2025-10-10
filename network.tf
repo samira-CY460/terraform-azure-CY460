@@ -1,4 +1,22 @@
 # =============================================
+# Resource Group (si non déjà défini à l'étape 7)
+# =============================================
+resource "azurerm_resource_group" "rg_pipeline" {
+  name     = "rg-test"  # Ajuste selon l'étape 7
+  location = "eastus"
+}
+
+# =============================================
+# Réseau Virtuel (si non déjà défini à l'étape 8)
+# =============================================
+resource "azurerm_virtual_network" "vnet_cr460" {
+  name                = "vnet-cr460"
+  address_space       = ["10.0.0.0/16"]
+  location            = azurerm_resource_group.rg_pipeline.location
+  resource_group_name = azurerm_resource_group.rg_pipeline.name
+}
+
+# =============================================
 # Subnet dans le réseau virtuel existant
 # =============================================
 resource "azurerm_subnet" "subnet_cr460" {
@@ -15,7 +33,7 @@ resource "azurerm_public_ip" "pip_cr460" {
   name                = "pip-cr460-samira"
   resource_group_name = azurerm_resource_group.rg_pipeline.name
   location            = azurerm_resource_group.rg_pipeline.location
-  allocation_method   = "Static"   # obligatoire pour Standard SKU
+  allocation_method   = "Static"
   sku                 = "Standard"
 }
 
@@ -49,7 +67,21 @@ resource "azurerm_linux_virtual_machine" "vm_cr460" {
     azurerm_network_interface.nic_cr460.id
   ]
 
-  # Clé SSH pour connexion
+  # Clé SSH pour connexion (remplace par ta clé complète)
   admin_ssh_key {
     username   = "azureuser"
-    public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDHPtzi364Jm5Alp9nN+yffnV69Yk5h7LD/LGy24ob1l0O40CheAFNcVdW3yw+Y8TV2VsLdfQDgOPadVuIdG/flyOxwMnkeJGJjlmW0oQrqZz3+QU9W4mc+0wRzNLXnxEsvHhM2Xh1bLVcu95yO1WP+1Aoy5Gpk7ZgmPWZYBXXGOZu58ZJ/4D8sPWYcNiEQpMBvRcKusipj1m1iB7DyqoRM7Cu2op7O04qcBChfDLmNLwrvN8vrw5gek63D59eyabOx6kdarqJwN7cuvmTLsuRRsSb3yngxGCK0WZk+efQewjePq3R+aZ8RHFurNJfhEgphJbnYouEL+6z4GKwf0Zp+bfQwuN/8ArjfCNvNaBEbF6X8mApLJYopytp+JpmxVsUSuwldw4UbeFxb6kEb+yWJrNNMxsMB5uZuUCY0flhphFBeVVHZOf47r8v9CHsGXIilvyn5WNVqyfW2UlxdbQ5vB6xlPbj5oUkzLs20LR4cbnpnaXjwRGYPQxzS4nV/lwP6pAkHGanEbOOiDyebhIvUDKBYp7PL4RsxeQOW1NNYRbota/BNBXlwbTVQNPxGmrORyK2ICrHZ04s2WD8PlpDEmuUnY6NRDfH8JBrofb5U+oigva8zEHi97tnuhsAP4WzcdpnZeWHyRKC4N_
+    public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDHPtzi364Jm5Alp9nN+yffnV69Yk5h7LD/LGy24ob1l0O40CheAFNcVdW3yw+Y8TV2VsLdfQDgOPadVuIdG/flyOxwMnkeJGJjlmW0oQrqZz3+QU9W4mc+0wRzNLXnxEsvHhM2Xh1bLVcu95yO1WP+1Aoy5Gpk7ZgmPWZYBXXGOZu58ZJ/4D8sPWYcNiEQpMBvRcKusipj1m1iB7DyqoRM7Cu2op7O04qcBChfDLmNLwrvN8vrw5gek63D59eyabOx6kdarqJwN7cuvmTLsuRRsSb3yngxGCK0WZk+efQewjePq3R+aZ8RHFurNJfhEgphJbnYouEL+6z4GKwf0Zp+bfQwuN/8ArjfCNvNaBEbF6X8mApLJYopytp+JpmxVsUSuwldw4UbeFxb6kEb+yWJrNNMxsMB5uZuUCY0flhphFBeVVHZOf47r8v9CHsGXIilvyn5WNVqyfW2UlxdbQ5vB6xlPbj5oUkzLs20LR4cbnpnaXjwRGYPQxzS4nV/lwP6pAkHGanEbOOiDyebhIvUDKBYp7PL4RsxeQOW1NNYRbota/BNBXlwbTVQNPxGmrORyK2ICrHZ04s2WD8PlpDEmuUnY6NRDfH8JBrofb5U+oigva8zEHi97tnuhsAP4WzcdpnZeWHyRKC4N_ samira@machine"  # Remplace par ta clé complète
+  }
+
+  os_disk {
+    caching              = "ReadWrite"
+    storage_account_type = "Standard_LRS"
+  }
+
+  source_image_reference {
+    publisher = "Canonical"
+    offer     = "UbuntuServer"
+    sku       = "18.04-LTS"
+    version   = "latest"
+  }
+}
