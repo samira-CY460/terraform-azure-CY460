@@ -11,7 +11,7 @@ resource "azurerm_public_ip" "pip_cr460" {
   name                = "pip-cr460-samira"
   resource_group_name = azurerm_resource_group.rg_pipeline.name
   location            = azurerm_resource_group.rg_pipeline.location
-  allocation_method   = "Dynamic"
+  allocation_method   = "Static"    # <- Changement ici
   sku                 = "Standard"
 }
 
