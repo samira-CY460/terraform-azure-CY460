@@ -4,7 +4,7 @@
 resource "azurerm_subnet" "subnet_cr460" {
   name                 = "subnet-cr460"
   resource_group_name  = azurerm_resource_group.rg_pipeline.name
-  virtual_network_name = azurerm_virtual_network.vnet_cr460.name
+  virtual_network_name = azurerm_virtual_network.vnet_cr460.name  # Pointe vers vnet-cr460-samira
   address_prefixes     = ["10.0.1.0/24"]
 }
 
@@ -15,7 +15,7 @@ resource "azurerm_public_ip" "pip_cr460" {
   name                = "pip-cr460-samira"
   resource_group_name = azurerm_resource_group.rg_pipeline.name
   location            = azurerm_resource_group.rg_pipeline.location
-  allocation_method   = "Static"   # obligatoire pour Standard SKU
+  allocation_method   = "Static"
   sku                 = "Standard"
 }
 
@@ -68,8 +68,8 @@ EOF
   source_image_reference {
     publisher = "Canonical"
     offer     = "UbuntuServer"
-    sku       = "22_04-lts"
-    version   = "latest"
+    sku       = "18.04-LTS"
+    version   = "18.04.202401161"
   }
 
   tags = {
