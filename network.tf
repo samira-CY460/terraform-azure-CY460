@@ -4,7 +4,7 @@
 resource "azurerm_subnet" "subnet_cr460" {
   name                 = "subnet-cr460"
   resource_group_name  = azurerm_resource_group.rg_pipeline.name
-  virtual_network_name = azurerm_virtual_network.vnet_cr460.name  # Pointe vers vnet-cr460-samira
+  virtual_network_name = azurerm_virtual_network.vnet_cr460.name
   address_prefixes     = ["10.0.1.0/24"]
 }
 
@@ -42,7 +42,7 @@ resource "azurerm_linux_virtual_machine" "vm_cr460" {
   name                = "vm-cr460-samira"
   resource_group_name = azurerm_resource_group.rg_pipeline.name
   location            = azurerm_resource_group.rg_pipeline.location
-  size                = "Standard_B1s"
+  size                = "Standard_B1ls"  # Changé de Standard_B1s vers Standard_B1ls (alternative disponible)
   admin_username      = "azureuser"
 
   network_interface_ids = [
