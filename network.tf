@@ -12,6 +12,7 @@ resource "azurerm_public_ip" "pip_cr460" {
   resource_group_name = azurerm_resource_group.rg_pipeline.name
   location            = azurerm_resource_group.rg_pipeline.location
   allocation_method   = "Dynamic"
+  sku                 = "Standard"
 }
 
 # Création de la Network Interface (NIC) pour la VM
