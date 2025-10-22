@@ -42,7 +42,7 @@ resource "azurerm_linux_virtual_machine" "vm_cr460" {
   name                = "vm-cr460-samira"
   resource_group_name = azurerm_resource_group.rg_pipeline.name
   location            = azurerm_resource_group.rg_pipeline.location
-  size                = "Standard_B2s"  # Changé de Standard_B1ls vers Standard_B2s (disponible dans eastus pour comptes gratuits)
+  size                = "Standard_B2ts_v2"  # Changé de Standard_B2s vers Standard_B2ts_v2 (burstable, disponible pour comptes gratuits)
   admin_username      = "azureuser"
 
   network_interface_ids = [
