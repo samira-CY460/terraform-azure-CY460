@@ -14,7 +14,7 @@ terraform {
   }
 }
 
-provider "azurerm" {
-  features {}
-}
-
+# Supprimé pour éviter le doublon avec main.tf
+# provider "azurerm" {
+#   features {}
+# }
